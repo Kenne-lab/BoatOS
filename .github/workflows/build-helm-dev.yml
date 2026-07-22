@@ -55,7 +55,8 @@ jobs:
 
       - name: Verify Build
         run: |
-          ls -R flutter_app/build
+        echo "===Build Inhalt==="
+          find flutter_app/build -type f -o -type d
 
       - name: Upload app.so
         uses: actions/upload-artifact@v5
@@ -65,7 +66,8 @@ jobs:
           if-no-files-found: error
 
       - name: Upload Complete Build
-        uses: actions/upload-artifact@v5
-        with:
-          name: BoatOS-build
-          path: flutter_app/build/flutter-pi/
+  uses: actions/upload-artifact@v4
+  with:
+    name: BoatOS-build
+    path: flutter_app/build/flutter-pi/
+    if-no-files-found: error
