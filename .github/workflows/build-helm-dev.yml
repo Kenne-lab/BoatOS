@@ -1,41 +1,71 @@
-name: Build Helm Dev
+name: Build BoatOS Helm (Development)
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'flutter_app/**'
+      - '.github/workflows/build-helm-dev.yml'
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    name: Build flutter-pi (arm64)
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v5
 
-      - name: Install arm64 cross-compiler
+      - name: Install ARM64 Toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+          sudo apt-get install -y \
+            gcc-aarch64-linux-gnu \
+            binutils-aarch64-linux-gnu
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.2'
+          flutter-version: "3.35.2"
           channel: stable
           cache: true
+
+      - name: Show Flutter Version
+        run: flutter --version
 
       - name: Install flutterpi_tool
         run: dart pub global activate flutterpi_tool
 
+      - name: Install Dependencies
+        working-directory: flutter_app
+        run: flutter pub get
+
       - name: Build BoatOS
         working-directory: flutter_app
         run: |
-          flutter pub get
-          $HOME/.pub-cache/bin/flutterpi_tool build --arch=arm64 --cpu=generic --release
+          $HOME/.pub-cache/bin/flutterpi_tool build \
+            --arch=arm64 \
+            --cpu=generic \
+            --release
+
+      - name: Verify Build
+        run: |
+          ls -R flutter_app/build
 
       - name: Upload app.so
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: app-so
+          name: BoatOS-app-so
           path: flutter_app/build/flutter-pi/aarch64-generic/app.so
+          if-no-files-found: error
+
+      - name: Upload Complete Build
+        uses: actions/upload-artifact@v5
+        with:
+          name: BoatOS-build
+          path: flutter_app/build/flutter-pi/
