@@ -55,7 +55,7 @@ jobs:
 
       - name: Verify Build
         run: |
-        echo "===Build Inhalt==="
+          echo "=== Build Inhalt ==="
           find flutter_app/build -type f -o -type d
 
       - name: Upload app.so
@@ -65,9 +65,17 @@ jobs:
           path: flutter_app/build/flutter-pi/aarch64-generic/app.so
           if-no-files-found: error
 
-      - name: Upload Complete Build
-  uses: actions/upload-artifact@v4
-  with:
-    name: BoatOS-build
-    path: flutter_app/build/flutter-pi/
-    if-no-files-found: error
+      - name: Prepare BoatOS Package
+        run: |
+          mkdir -p BoatOS-package
+          cp -r flutter_app/build/flutter-pi/aarch64-generic/* BoatOS-package/
+
+          echo "=== BoatOS Package ==="
+          find BoatOS-package -type f
+
+      - name: Upload BoatOS Package
+        uses: actions/upload-artifact@v5
+        with:
+          name: BoatOS-build
+          path: BoatOS-package/
+          if-no-files-found: error
