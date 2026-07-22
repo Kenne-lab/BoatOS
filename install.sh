@@ -17,7 +17,7 @@ info()    { echo -e "${YELLOW}Info: $1${NC}"; }
 [ "$EUID" -eq 0 ] && error "Bitte fuehre dieses Skript NICHT als root aus!"
 
 INSTALL_USER=$(whoami)
-INSTALL_DIR="/srv/BoatOS"
+INSTALL_DIR="/home/boatos/BoatOS"
 
 echo "Benutzer:  $INSTALL_USER"
 echo "Verzeichnis: $INSTALL_DIR"

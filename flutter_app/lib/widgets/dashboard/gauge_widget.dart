@@ -237,7 +237,7 @@ class DashSensorListPicker extends StatefulWidget {
   final String? selected;
   final void Function(String) onSelect;
   const DashSensorListPicker(
-      {required this.sensors, required this.selected, required this.onSelect});
+      {super.key, required this.sensors, required this.selected, required this.onSelect});
   @override
   State<DashSensorListPicker> createState() => DashSensorListPickerState();
 }
@@ -330,7 +330,7 @@ class DashStyleChips extends StatelessWidget {
   final String? selected;
   final void Function(String?) onSelect;
   const DashStyleChips(
-      {required this.styles, required this.selected, required this.onSelect});
+      {super.key, required this.styles, required this.selected, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
@@ -363,7 +363,7 @@ class DashStyleChips extends StatelessWidget {
 class DashDecimalsPicker extends StatelessWidget {
   final int? value;
   final void Function(int?) onSelect;
-  const DashDecimalsPicker({required this.value, required this.onSelect});
+  const DashDecimalsPicker({super.key, required this.value, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {

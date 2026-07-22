@@ -178,7 +178,7 @@ DashWidget _parseSensorDW(List<String> t) {
           for (final pair in clean.split(',')) {
             final idx = pair.indexOf(':');
             if (idx > 0) {
-              fieldAliases![pair.substring(0, idx).trim()] = pair.substring(idx + 1).trim();
+              fieldAliases[pair.substring(0, idx).trim()] = pair.substring(idx + 1).trim();
             }
           }
         }
@@ -506,9 +506,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
     final widgets = <DashWidget>[];
     if (isScreen) {
-      for (final s in _parseScreenDSL(dsl)) widgets.addAll(s.widgets.values);
+      for (final s in _parseScreenDSL(dsl)) {
+        widgets.addAll(s.widgets.values);
+      }
     } else {
-      for (final r in _parseDSL(dsl).rows) widgets.addAll(r.widgets);
+      for (final r in _parseDSL(dsl).rows) {
+        widgets.addAll(r.widgets);
+      }
     }
     return widgets.any((w) =>
         w.type == 'HORIZON' &&

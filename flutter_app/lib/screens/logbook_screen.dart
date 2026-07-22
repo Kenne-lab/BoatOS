@@ -500,7 +500,11 @@ class _CrewSelectionSheetState extends State<_CrewSelectionSheet> {
             ...crew.map((m) => CheckboxListTile(
                   value: _selected.contains(m.id),
                   onChanged: (v) => setState(() {
-                    if (v == true) _selected.add(m.id); else _selected.remove(m.id);
+                    if (v == true) {
+                      _selected.add(m.id);
+                    } else {
+                      _selected.remove(m.id);
+                    }
                   }),
                   title: Row(children: [
                     Text(m.avatar, style: const TextStyle(fontFamilyFallback: ['NotoColorEmoji'])),
@@ -1260,7 +1264,7 @@ class _CrewModalState extends State<_CrewModal> {
               const SizedBox(height: 12),
 
               DropdownButtonFormField<String>(
-                value: _role,
+                initialValue: _role,
                 dropdownColor: _kCard,
                 style: const TextStyle(color: Colors.white),
                 decoration: _fieldDeco(l.crewRole),
@@ -1334,8 +1338,11 @@ class _CrewModalState extends State<_CrewModal> {
         : await svc.updateCrewMember(widget.member!.id, data) != null;
     if (mounted) {
       setState(() => _saving = false);
-      if (ok) Navigator.pop(context);
-      else _showSnack(context, context.l10n.crewDeleteFailed);
+      if (ok) {
+        Navigator.pop(context);
+      } else {
+        _showSnack(context, context.l10n.crewDeleteFailed);
+      }
     }
   }
 }

@@ -299,7 +299,7 @@ class _ArcPainter extends CustomPainter {
     canvas.drawArc(Rect.fromCircle(center: center, radius: r),
       start, sweep * percentage, false,
       Paint()
-        ..color = accentColor.withOpacity(0.22)
+        ..color = accentColor.withValues(alpha: 0.22)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 18
         ..strokeCap = StrokeCap.round);
@@ -369,7 +369,7 @@ class _ArcPainter extends CustomPainter {
     final tail   = Offset(center.dx - math.cos(angle) * tailR, center.dy - math.sin(angle) * tailR);
 
     canvas.drawLine(tail, tip, Paint()
-      ..color = Colors.black.withOpacity(0.35)
+      ..color = Colors.black.withValues(alpha: 0.35)
       ..strokeWidth = 4
       ..strokeCap = StrokeCap.round);
     canvas.drawLine(tail, tip, Paint()
@@ -381,7 +381,7 @@ class _ArcPainter extends CustomPainter {
   void _drawCap(Canvas canvas, Offset center) {
     canvas.drawCircle(center, 8,   Paint()..color = const Color(0xFF1565C0));
     canvas.drawCircle(center, 5,   Paint()..color = const Color(0xFF4FC3F7));
-    canvas.drawCircle(center, 2.5, Paint()..color = Colors.white.withOpacity(0.8));
+    canvas.drawCircle(center, 2.5, Paint()..color = Colors.white.withValues(alpha: 0.8));
   }
 
   @override
@@ -462,8 +462,8 @@ class _BarGauge extends StatelessWidget {
                 height: 10,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  gradient: LinearGradient(colors: [color.withOpacity(0.6), color]),
-                  boxShadow: [BoxShadow(color: color.withOpacity(0.35), blurRadius: 4)],
+                  gradient: LinearGradient(colors: [color.withValues(alpha: 0.6), color]),
+                  boxShadow: [BoxShadow(color: color.withValues(alpha: 0.35), blurRadius: 4)],
                 ),
               ),
             ),
@@ -705,7 +705,7 @@ class _ValueChipState extends State<_ValueChip>
     super.didUpdateWidget(old);
     final newTgt = _toDouble(widget.value);
     if (newTgt != null) {
-      if (_dispValue == null) _dispValue = newTgt;
+      _dispValue ??= newTgt;
       _tgtValue = newTgt;
     } else {
       _dispValue = _tgtValue = null;
@@ -842,12 +842,12 @@ class _HorizonWidgetState extends State<HorizonWidget>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.red.withOpacity(0.2 + _blinkCtrl.value * 0.65),
+                    color: Colors.red.withValues(alpha: 0.2 + _blinkCtrl.value * 0.65),
                     width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.red.withOpacity(_blinkCtrl.value * 0.25),
+                      color: Colors.red.withValues(alpha: _blinkCtrl.value * 0.25),
                       blurRadius: 14,
                       spreadRadius: 2,
                     ),
@@ -976,12 +976,12 @@ class _HorizonPainter extends CustomPainter {
 
     // Horizon glow
     canvas.drawLine(Offset(-bigR, 0), Offset(bigR, 0), Paint()
-      ..color = Colors.white.withOpacity(0.18)
+      ..color = Colors.white.withValues(alpha: 0.18)
       ..strokeWidth = 7
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3));
     // Horizon line
     canvas.drawLine(Offset(-bigR, 0), Offset(bigR, 0), Paint()
-      ..color = Colors.white.withOpacity(0.92)
+      ..color = Colors.white.withValues(alpha: 0.92)
       ..strokeWidth = 1.8);
 
     // Roll indicator triangle (rotates with horizon, no pitch offset)
@@ -992,9 +992,9 @@ class _HorizonPainter extends CustomPainter {
       ..lineTo(5,  -(r - 16))
       ..close();
     canvas.drawPath(triPath, Paint()
-      ..color = Colors.white.withOpacity(0.92)..style = PaintingStyle.fill);
+      ..color = Colors.white.withValues(alpha: 0.92)..style = PaintingStyle.fill);
     canvas.drawPath(triPath, Paint()
-      ..color = Colors.black.withOpacity(0.4)
+      ..color = Colors.black.withValues(alpha: 0.4)
       ..style = PaintingStyle.stroke..strokeWidth = 1.0);
 
     canvas.restore(); // end rotate+pitch
@@ -1019,9 +1019,9 @@ class _HorizonPainter extends CustomPainter {
   void _drawPitchLines(Canvas canvas, double r) {
     final pxPerDeg = r / _kDegPerR;
     final major = Paint()
-      ..color = Colors.white.withOpacity(0.55)..strokeWidth = 1.5;
+      ..color = Colors.white.withValues(alpha: 0.55)..strokeWidth = 1.5;
     final minor = Paint()
-      ..color = Colors.white.withOpacity(0.28)..strokeWidth = 1.0;
+      ..color = Colors.white.withValues(alpha: 0.28)..strokeWidth = 1.0;
 
     for (int deg = -60; deg <= 60; deg += 5) {
       if (deg == 0) continue;
@@ -1054,7 +1054,7 @@ class _HorizonPainter extends CustomPainter {
         Offset(c.dx + math.cos(rad) * inner, c.dy + math.sin(rad) * inner),
         Offset(c.dx + math.cos(rad) * outer, c.dy + math.sin(rad) * outer),
         Paint()
-          ..color = Colors.white.withOpacity(isMajor ? 0.65 : 0.38)
+          ..color = Colors.white.withValues(alpha: isMajor ? 0.65 : 0.38)
           ..strokeWidth = isMajor ? 1.5 : 1.0,
       );
     }
@@ -1065,24 +1065,24 @@ class _HorizonPainter extends CustomPainter {
       ..lineTo(c.dx - 5, topY + 2)
       ..lineTo(c.dx + 5, topY + 2)
       ..close();
-    canvas.drawPath(fixPath, Paint()..color = Colors.white.withOpacity(0.80));
+    canvas.drawPath(fixPath, Paint()..color = Colors.white.withValues(alpha: 0.80));
   }
 
   void _drawFixedReticle(Canvas canvas, Offset c, double r) {
     final shadow = Paint()
-      ..color = Colors.black.withOpacity(0.35)
+      ..color = Colors.black.withValues(alpha: 0.35)
       ..strokeWidth = 3.0
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke;
     final white = Paint()
-      ..color = Colors.white.withOpacity(0.60)
+      ..color = Colors.white.withValues(alpha: 0.60)
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke;
     final fill = Paint()
-      ..color = Colors.white.withOpacity(0.04)
+      ..color = Colors.white.withValues(alpha: 0.04)
       ..style = PaintingStyle.fill;
 
     // Boat silhouette — front/cross-section view
@@ -1132,15 +1132,19 @@ class _HorizonPainter extends CustomPainter {
     canvas.drawPath(hullFill, fill);
 
     // Shadow pass then white pass
-    for (final p in [hull, deck, cabin, mast]) canvas.drawPath(p, shadow);
-    for (final p in [hull, deck, cabin, mast]) canvas.drawPath(p, white);
+    for (final p in [hull, deck, cabin, mast]) {
+      canvas.drawPath(p, shadow);
+    }
+    for (final p in [hull, deck, cabin, mast]) {
+      canvas.drawPath(p, white);
+    }
 
     // Waterline marker (center dot)
     canvas.drawCircle(c, 6, Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke..strokeWidth = 4);
     canvas.drawCircle(c, 6, Paint()
-      ..color = Colors.white.withOpacity(0.90)
+      ..color = Colors.white.withValues(alpha: 0.90)
       ..style = PaintingStyle.stroke..strokeWidth = 2);
     canvas.drawCircle(c, 2.5, Paint()..color = Colors.white);
   }

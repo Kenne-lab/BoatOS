@@ -106,8 +106,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _mqttUser         = TextEditingController();
     _mqttPass         = TextEditingController();
     _depthAlarm       = TextEditingController();
-    for (final r in _rivers)      _riverCtrl[r]     = TextEditingController();
-    for (final t in _riverTypes)  _riverTypeCtrl[t] = TextEditingController();
+    for (final r in _rivers) {
+      _riverCtrl[r]     = TextEditingController();
+    }
+    for (final t in _riverTypes) {
+      _riverTypeCtrl[t] = TextEditingController();
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final s = context.read<SettingsService>();
@@ -155,8 +159,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _mqttPass.text   = '${sensors['mqttPass']   ?? ''}';
     _depthAlarm.text = '${sensors['depthAlarm'] ?? '2'}';
 
-    for (final r in _rivers)      _riverCtrl[r]!.text     = '${currents[r.toLowerCase()] ?? ''}';
-    for (final t in _riverTypes)  _riverTypeCtrl[t]!.text = '${curtypes[t] ?? ''}';
+    for (final r in _rivers) {
+      _riverCtrl[r]!.text     = '${currents[r.toLowerCase()] ?? ''}';
+    }
+    for (final t in _riverTypes) {
+      _riverTypeCtrl[t]!.text = '${curtypes[t] ?? ''}';
+    }
   }
 
   @override
@@ -168,9 +176,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _aisKey, _aisRange, _minCpa,
       _defaultSpeed, _dayStartTime, _osrmUrl,
       _mqttUrl, _mqttUser, _mqttPass, _depthAlarm,
-    ]) c.dispose();
-    for (final c in _riverCtrl.values)     c.dispose();
-    for (final c in _riverTypeCtrl.values) c.dispose();
+    ]) {
+      c.dispose();
+    }
+    for (final c in _riverCtrl.values) {
+      c.dispose();
+    }
+    for (final c in _riverTypeCtrl.values) {
+      c.dispose();
+    }
     _updatePollTimer?.cancel();
     _updateScrollCtrl.dispose();
     super.dispose();
@@ -803,8 +817,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             label: Text(l.mqttTestBtn),
             onPressed: () {
               var urlText = _mqttUrl.text.trim();
-              if (urlText.startsWith('mqtt://'))  urlText = urlText.substring(7);
-              else if (urlText.startsWith('http://')) urlText = urlText.substring(7);
+              if (urlText.startsWith('mqtt://')) {
+                urlText = urlText.substring(7);
+              } else if (urlText.startsWith('http://')) urlText = urlText.substring(7);
               String host = urlText;
               int port = 1883;
               if (urlText.contains(':')) {
@@ -1325,7 +1340,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Expanded(child: Text(label,
               style: const TextStyle(fontSize: 14, color: Color(0xFFE6EDF3)))),
           Switch(value: value, onChanged: onChanged,
-              activeColor: const Color(0xFF4FC3F7),
+              activeThumbColor: const Color(0xFF4FC3F7),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
         ]),
       );
@@ -1501,8 +1516,9 @@ class _SchleusenSectionState extends State<_SchleusenSection> {
       final body = json.decode(r.body) as Map<String, dynamic>? ?? {};
       final ok = body['success'] == true || r.statusCode == 200;
       String msg = '';
-      if (body['imported'] != null) msg = '${body['imported']} importiert, ${body['updated'] ?? 0} aktualisiert';
-      else if (body['enriched'] != null) msg = '${body['enriched']} angereichert — VHF: ${body['vhf_coverage'] ?? '?'}';
+      if (body['imported'] != null) {
+        msg = '${body['imported']} importiert, ${body['updated'] ?? 0} aktualisiert';
+      } else if (body['enriched'] != null) msg = '${body['enriched']} angereichert — VHF: ${body['vhf_coverage'] ?? '?'}';
       else if (body['checked'] != null) msg = '${body['checked']} geprüft, ${body['fixed'] ?? 0} korrigiert';
       else if (body['total'] != null) {
         msg = 'Gesamt: ${body['total']} Schleusen\n'
@@ -1994,7 +2010,9 @@ class _DashboardSectionState extends State<_DashboardSection> {
       if (enable) {
         _trackedSensors.addAll(topics);
       } else {
-        for (final t in topics) _trackedSensors.remove(t);
+        for (final t in topics) {
+          _trackedSensors.remove(t);
+        }
       }
     });
     try {
@@ -2210,7 +2228,9 @@ class _DashboardSectionState extends State<_DashboardSection> {
   List<String> _tokenise(String line) {
     final tokens = <String>[];
     final re = RegExp(r'"[^"]*"|\S+');
-    for (final m in re.allMatches(line)) tokens.add(m.group(0)!);
+    for (final m in re.allMatches(line)) {
+      tokens.add(m.group(0)!);
+    }
     return tokens;
   }
 
@@ -3695,7 +3715,7 @@ class _WidgetEditDialogState extends State<_WidgetEditDialog> {
                         ),
                         child: SwitchListTile(
                           dense: true,
-                          activeColor: const Color(0xFF4FC3F7),
+                          activeThumbColor: const Color(0xFF4FC3F7),
                           title: const Text('Impact-Alarm',
                               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600,
                                   color: Color(0xFFE6EDF3))),

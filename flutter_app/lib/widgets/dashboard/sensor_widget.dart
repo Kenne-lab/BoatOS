@@ -85,7 +85,9 @@ class _SensorEditorFieldsState extends State<_SensorEditorFields> {
   }
 
   void _rebuildFieldAliasCtrl() {
-    for (final c in _fieldAliasCtrl.values) c.dispose();
+    for (final c in _fieldAliasCtrl.values) {
+      c.dispose();
+    }
     _fieldAliasCtrl.clear();
     final aliases = widget.w.fieldAliases ?? {};
     for (final field in _availableFields()) {
@@ -104,7 +106,9 @@ class _SensorEditorFieldsState extends State<_SensorEditorFields> {
   @override
   void dispose() {
     _aliasCtrl.dispose();
-    for (final c in _fieldAliasCtrl.values) c.dispose();
+    for (final c in _fieldAliasCtrl.values) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -157,7 +161,11 @@ class _SensorEditorFieldsState extends State<_SensorEditorFields> {
                   GestureDetector(
                     onTap: () => widget.setState(() {
                       final cur = List<String>.from(widget.w.fields ?? []);
-                      if (checked) cur.remove(field); else cur.add(field);
+                      if (checked) {
+                        cur.remove(field);
+                      } else {
+                        cur.add(field);
+                      }
                       widget.w.fields = cur.isEmpty ? null : cur;
                     }),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -186,7 +194,11 @@ class _SensorEditorFieldsState extends State<_SensorEditorFields> {
                       style: const TextStyle(fontSize: 11, color: Color(0xFFE6EDF3)),
                       onChanged: (v) => widget.setState(() {
                         final aliases = Map<String, String>.from(widget.w.fieldAliases ?? {});
-                        if (v.isEmpty) aliases.remove(field); else aliases[field] = v;
+                        if (v.isEmpty) {
+                          aliases.remove(field);
+                        } else {
+                          aliases[field] = v;
+                        }
                         widget.w.fieldAliases = aliases.isEmpty ? null : aliases;
                       }),
                       decoration: _inputDec('Anzeigename'),

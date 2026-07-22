@@ -107,8 +107,9 @@ class _KbSheetState extends State<_KbSheet> with SingleTickerProviderStateMixin 
 
   void _toggleShift() {
     setState(() {
-      if (!_shift && !_caps)       _shift = true;
-      else if (_shift && !_caps) { _shift = false; _caps = true; }
+      if (!_shift && !_caps) {
+        _shift = true;
+      } else if (_shift && !_caps) { _shift = false; _caps = true; }
       else                       { _caps  = false; _shift = false; }
     });
   }

@@ -27,7 +27,7 @@ class HorizonDashWidget {
     final impS   = w.impactSensor ?? '';
     final impF   = w.impactField  ?? 'aktiv';
 
-    double _field(String base, String field) {
+    double field(String base, String field) {
       if (base.isEmpty) return 0;
       final sensor = sensors[base];
       if (sensor == null) return 0;
@@ -38,7 +38,7 @@ class HorizonDashWidget {
       return 0;
     }
 
-    bool _truthy(String base, String field) {
+    bool truthy(String base, String field) {
       if (base.isEmpty) return false;
       final sensor = sensors[base];
       if (sensor == null) return false;
@@ -47,9 +47,9 @@ class HorizonDashWidget {
       return raw == 'true' || raw == '1' || raw == 'yes' || raw == 'aktiv';
     }
 
-    final roll  = _field(rollS,  rollF);
-    final pitch = _field(pitchS, pitchF);
-    final impactActive = impS.isNotEmpty && _truthy(impS, impF) && !impactMuted;
+    final roll  = field(rollS,  rollF);
+    final pitch = field(pitchS, pitchF);
+    final impactActive = impS.isNotEmpty && truthy(impS, impF) && !impactMuted;
 
     return HorizonWidget(roll: roll, pitch: pitch, impactActive: impactActive);
   }
@@ -158,7 +158,7 @@ class _HorizonEditorFields extends StatelessWidget {
         ),
         child: SwitchListTile(
           dense: true,
-          activeColor: const Color(0xFF4FC3F7),
+          activeThumbColor: const Color(0xFF4FC3F7),
           title: const Text('Impact-Alarm',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600,
                   color: Color(0xFFE6EDF3))),
